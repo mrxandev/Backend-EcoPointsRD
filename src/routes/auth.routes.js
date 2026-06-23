@@ -25,7 +25,7 @@ router.get(
 router.get(
   "/validator/test",
   authMiddleware,
-  authorizeRoles("VALIDATOR", "ADMIN"),
+  authorizeRoles("AGENT", "ADMIN"),
   (req, res) => {
     res.json({
       message: "Acceso permitido para VALIDATOR o ADMIN",
