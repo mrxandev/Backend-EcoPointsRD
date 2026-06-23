@@ -1,19 +1,26 @@
-import pg from "pg"
-import dotenv from "dotenv"
+import pg from "pg";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-const {Pool}=pg
+const { Pool } = pg;
 
 export const pool = new Pool({
-    connectionString:process.env.DATABASE_URL,
-    ssl:{
-        rejectUnauthorized:false
-    }
-})
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
-// Probando conexion
+export const connectDB = async () => {
+  try {
+    const client = await pool.connect();
 
-pool.connect()
-.then(()=>console.log('Base de Datos conectada'))
-.catch((err)=>console.error('Error al conectar a la Base de Datos:',err))
+    console.log("Base de Datos conectada");
+
+    client.release();
+  } catch (error) {
+    console.error("Error al conectar:", error);
+    process.exit(1);
+  }
+};
