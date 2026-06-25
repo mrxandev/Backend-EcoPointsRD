@@ -2,6 +2,7 @@ import {connectDB} from './src/db/connection.js'
 import express from "express"
 import dotenv from "dotenv"
 import authRoutes from "./src/routes/auth.routes.js"
+import adminRoutes from "./src/routes/admin.routes.js"
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth',authRoutes)
+app.use("/api/admin", adminRoutes)
 
 
 const startServer = async () => {
