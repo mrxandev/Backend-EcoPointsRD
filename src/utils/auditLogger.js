@@ -13,7 +13,7 @@ export const createAuditLog = async ({
   userAgent = null,
 }) => {
   const result = await pool.query(
-    `INSERT INTO audit_logs (
+    `INSERT INTO system_logs (
       actor_id,
       target_user_id,
       action,
