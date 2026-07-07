@@ -28,6 +28,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "https://ecopointsrd.vercel.app",
+  "http://localhost:8081",
+  "exp://10.0.0.8:8081"
 ];
 
 const corsOptions = {
