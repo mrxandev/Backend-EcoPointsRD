@@ -220,7 +220,7 @@ const optionalAuth = (req, res, next) => {
 };
 
 router.get("/my/registrations", authMiddleware, myRegistrations);
-router.get("/", listMissions);
+router.get("/", optionalAuth, listMissions);
 router.get("/:id", optionalAuth, getMission);
 router.post("/:id/register", authMiddleware, registerMission);
 router.delete("/:id/register", authMiddleware, cancelRegistration);

@@ -17,14 +17,30 @@ export const listMissions = async (req, res) => {
   appendFilter(conditions, values, "m.municipality", req.query.municipality);
   appendFilter(conditions, values, "m.status", req.query.status);
 
+  let userSelect = "";
+  let userJoin = "";
+
+  if (req.user?.id) {
+    values.push(req.user.id);
+    const uParam = values.length;
+    userSelect = `, myr.status AS my_registration_status`;
+    userJoin = `LEFT JOIN mission_registrations myr ON myr.mission_id = m.id AND myr.user_id = $${uParam}`;
+
+    if (req.query.exclude_completed === "true" || req.query.filter_completed === "true") {
+      conditions.push(`(myr.status IS NULL OR myr.status <> 'COMPLETED')`);
+    }
+  }
+
   const result = await pool.query(
     `SELECT m.*, o.name AS organization_name,
       COUNT(mr.id)::int AS registered_count
+      ${userSelect}
      FROM missions m
      LEFT JOIN organizations o ON o.id = m.organization_id
      LEFT JOIN mission_registrations mr ON mr.mission_id = m.id AND mr.status <> 'CANCELLED'
+     ${userJoin}
      WHERE ${conditions.join(" AND ")}
-     GROUP BY m.id, o.name
+     GROUP BY m.id, o.name ${req.user?.id ? ", myr.status" : ""}
      ORDER BY m.created_at DESC`,
     values
   );
