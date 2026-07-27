@@ -921,8 +921,8 @@ router.get("/audit-logs", authorizeRoles("ADMIN"), getAuditLogs);
 router.get("/audit-logs/:id", authorizeRoles("ADMIN"), getAuditLogDetail);
 
 router.post("/users", authorizeRoles("ADMIN"), createUserByAdmin);
-router.get("/users", authorizeRoles("ADMIN"), getUsers);
-router.get("/users/:id", authorizeRoles("ADMIN"), getUserDetail);
+router.get("/users", authorizeRoles("ADMIN", "AGENT", "AUDITOR"), getUsers);
+router.get("/users/:id", authorizeRoles("ADMIN", "AGENT", "AUDITOR"), getUserDetail);
 router.put("/users/:id", authorizeRoles("ADMIN"), updateUserByAdmin);
 router.patch("/users/:id", authorizeRoles("ADMIN"), updateUserByAdmin);
 router.patch("/users/:id/suspend", authorizeRoles("ADMIN"), setUserStatus("SUSPENDED"));
