@@ -32,7 +32,7 @@ export const getTransactions = async (req, res) => {
 
 export const getRanking = async (req, res) => {
   const values = [];
-  const conditions = ["status = 'ACTIVE'"];
+  const conditions = ["status = 'ACTIVE'", "role = 'USER'"];
   appendFilter(conditions, values, "province", req.query.province);
   values.push(Number(req.query.limit || 50));
 
