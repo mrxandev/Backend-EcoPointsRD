@@ -20,6 +20,32 @@ export const listCenters = async (req, res) => {
   return ok(res, "Centros obtenidos correctamente", { centers: result.rows });
 };
 
+export const adminListCenters = async (req, res) => {
+  const conditions = [];
+  const values = [];
+
+  if (req.query.status) {
+    values.push(req.query.status);
+    conditions.push(`status = $${values.length}`);
+  }
+  if (req.query.province) {
+    values.push(req.query.province);
+    conditions.push(`province = $${values.length}`);
+  }
+  if (req.query.municipality) {
+    values.push(req.query.municipality);
+    conditions.push(`municipality = $${values.length}`);
+  }
+
+  const whereClause = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  const result = await pool.query(
+    `SELECT * FROM recycling_centers ${whereClause} ORDER BY created_at DESC`,
+    values
+  );
+
+  return ok(res, "Centros admin obtenidos correctamente", { centers: result.rows });
+};
+
 export const getCenter = async (req, res) => {
   const result = await pool.query("SELECT * FROM recycling_centers WHERE id = $1", [req.params.id]);
   if (result.rows.length === 0) return fail(res, "Centro no encontrado", 404);
