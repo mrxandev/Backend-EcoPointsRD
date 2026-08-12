@@ -37,6 +37,7 @@ import {
   setRewardStatus,
 } from "../controllers/reward.controller.js";
 import {
+  adminListCenters,
   createCenter,
   createRecyclingLog,
   listRecyclingLogs,
@@ -965,6 +966,7 @@ router.patch("/redemptions/:id/approve", authorizeRoles("ADMIN"), setRedemptionS
 router.patch("/redemptions/:id/deliver", authorizeRoles("ADMIN"), setRedemptionStatus("DELIVERED"));
 router.patch("/redemptions/:id/cancel", authorizeRoles("ADMIN"), setRedemptionStatus("CANCELLED"));
 
+router.get("/recycling/centers", authorizeRoles("ADMIN", "AGENT"), adminListCenters);
 router.post("/recycling/centers", authorizeRoles("ADMIN"), createCenter);
 router.put("/recycling/centers/:id", authorizeRoles("ADMIN"), updateCenter);
 router.patch("/recycling/centers/:id/activate", authorizeRoles("ADMIN"), setCenterStatus("ACTIVE"));
