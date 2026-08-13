@@ -342,7 +342,7 @@ export const validateMission = async (req, res) => {
     }
 
     let qrSessionId = null;
-    if (mission.requires_qr_validation) {
+    if (mission.requires_qr_validation && !req.body.is_manual) {
       const qr = await client.query(
         `SELECT * FROM qr_sessions
          WHERE token = $1 AND user_id = $2 AND used_at IS NULL AND expires_at > NOW()
